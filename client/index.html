@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hashtag Tracker</title>
+	<link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<div class="main">
+		<div class="header">
+			<div class="title">What would you like to search?</div>
+			<div class="search">
+				<form id="search">
+					<input type="text" placeholder="#SomeEdgyHashTag">
+				</form>
+			</div>
+		</div>
+	</div>
+	<script src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript">
+		let socket = io.connect("127.0.0.1:3000")
+		socket.on("tweet", function(data){
+			console.log(data)
+		})
+	</script>
+	<script src="index.js"></script>
+</body>
+</html>
