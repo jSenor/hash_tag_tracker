@@ -8,6 +8,7 @@ function elt(type, className, value, attrib){
 
 	if(attrib){
 		for(prop in attrib){
+			if(!attrib.hasOwnProperty(prop)) return
 			element.setAttribute(prop, attrib[prop])
 		}
 	}
@@ -23,4 +24,16 @@ function compose(element, children){
 		element.appendChild(child)
 	})
 	return element
+}
+
+function run(){
+	let fns = Array.prototype.slice.call(arguments)
+	return function(arg){
+		return propagate(fns.pop(), arg, fns)
+	}
+	function propagate(fn, value, rest){
+		let newValue = fn(value)
+		if(rest.length <= 0) return newValue
+		else return propagate(rest.pop(), newValue, rest)
+	}
 }

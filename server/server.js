@@ -13,9 +13,9 @@ app.get("/", function(req, res){
 })
 
 io.on("connection", function(socket){
-	sockets[socket.id] = socket
 
 	socket.on("listen", function(data){
+		sockets[socket.id] = socket
 		register(this.id, data.tag)
 	})
 
@@ -30,11 +30,16 @@ server.listen(3000, function(){
 
 function register(id, tag){
 	if(registered[id]) unregister(id)
+	if(!sockets[id]) return
 	twitterMock.track(tag, function(stream){
 		registered[id] = stream
 		console.log(registered)
 		stream.on("tweet", function(tweet){
-			sockets[id].emit("tweet", tweet)
+			sockets[id].volatile.emit("tweet", {
+				user: Math.random(),
+				img: "img.png",
+				content: tweet
+			})
 		})
 	})
 }
@@ -56,7 +61,7 @@ let createStreamer = function(tag){
 	return{
 		bank: null,
 		on: function(name, cb){
-			this.bank = setInterval(() => cb("Hello " + tag), 1000)
+			this.bank = setInterval(() => cb("Hello " + tag + Math.random()), 5000)
 		},
 		close: function(){
 			clearInterval(this.bank)

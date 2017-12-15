@@ -14,14 +14,27 @@
 				</form>
 			</div>
 		</div>
+		<div class="tweets">
+			<div class="tweet">
+				<div class="avatar">
+					<img src="img.png">
+				</div>
+				<div class="post">
+					<div class="user">Donald Trump</div>
+					<div class="content">Maybe they fixed it. I haven't been on the beta site since</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<script src="/socket.io/socket.io.js"></script>
+	<script src="helper.js"></script>
+	<script src="index.js"></script>
 	<script type="text/javascript">
 		let socket = io.connect("127.0.0.1:3000")
 		socket.on("tweet", function(data){
-			console.log(data)
+			console.log("got tweet")
+			handleTweet(data)
 		})
 	</script>
-	<script src="index.js"></script>
 </body>
 </html>

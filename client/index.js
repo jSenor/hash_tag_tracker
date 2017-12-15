@@ -21,3 +21,16 @@ function setupEvents(){
 		socket.emit("listen", {tag: hashTag})
 	}
 }
+
+function handleTweet(tweetObj){
+	let tweets = document.querySelector(".tweets")
+	let avatar = compose(elt("div", "avatar"), [
+			elt("img", null, null, {src: tweetObj.img})
+		])
+	let post = compose(elt("div", "post"), [
+			elt("div", "user", tweetObj.user),
+			elt("div", "content", tweetObj.content)
+		])
+	let tweet = compose(elt("div", "tweet"), [avatar, post])
+	tweets.prepend(tweet)
+}

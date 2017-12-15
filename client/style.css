@@ -43,3 +43,50 @@
 	color: rgba(0, 0, 0, 0.5);
 	text-align: center;
 }
+
+.tweets{
+	padding-top: 30px;
+	background-color: rgba(255,255,255,0.7);
+}
+
+.tweet{
+	/*outline: 1px solid black;*/
+	max-width: 70vw;
+	margin: 0 auto;
+	margin-bottom: 15px;
+	min-height: 100px;
+	box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.5);
+	display: flex;
+}
+
+.avatar{
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	flex: 1;
+	height: inherit;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.avatar img{
+	width: 80%;
+	height: 80%;
+	border-radius: 50%;
+}
+
+.post{
+	flex: 10;
+	/*outline: 1px solid black;*/
+	padding-top: 15px;
+}
+
+.post .user{
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+.post .content{
+	color: rgba(0,0,0,0.7);
+}
