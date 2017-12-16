@@ -3,6 +3,9 @@ const express = require("express")
 const app = express()
 const server = require("http").Server(app)
 const io = require("socket.io")(server)
+const twitter = require("twitter")
+const config = require("./config")
+const twitterAPI = twitter(config)
 
 let sockets = {}, registered = {}
 
@@ -31,22 +34,34 @@ server.listen(3000, function(){
 function register(id, tag){
 	if(registered[id]) unregister(id)
 	if(!sockets[id]) return
-	twitterMock.track(tag, function(stream){
+	// twitterMock.track(tag, function(stream){
+	// 	registered[id] = stream
+	// 	console.log(registered)
+	// 	stream.on("tweet", function(tweet){
+	// 		sockets[id].volatile.emit("tweet", {
+	// 			user: Math.random(),
+	// 			img: "img.png",
+	// 			content: tweet
+	// 		})
+	// 	})
+	// })
+	twitterAPI.stream("statuses/filter", {track: tag}, stream => {
 		registered[id] = stream
-		console.log(registered)
-		stream.on("tweet", function(tweet){
+		stream.on("data", tweet => {
 			sockets[id].volatile.emit("tweet", {
-				user: Math.random(),
-				img: "img.png",
-				content: tweet
+				user: tweet.user.screen_name,
+				img: tweet.user.profile_image_url,
+				content: tweet.text
 			})
 		})
+
+		stream.on("error", console.log)
 	})
 }
 
 function unregister(id){
 	if(!registered[id]) return
-	registered[id].close()
+	registered[id].destroy()
 	delete registered[id]
 	console.log(registered)
 }
